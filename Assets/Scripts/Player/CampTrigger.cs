@@ -27,9 +27,12 @@ public class CampTrigger : MonoBehaviour
     {
         campSetup.SetActive(false);
         promptUI.SetActive(false);
-        Color c = fadeImage.color;
-        c.a = 0f;
-        fadeImage.color = c;
+        if (fadeImage != null)
+        {
+            Color c = fadeImage.color;
+            c.a = 0f;
+            fadeImage.color = c;
+        }
     }
     void Update()
     {
@@ -67,11 +70,16 @@ public class CampTrigger : MonoBehaviour
             alex.position = alexCampPosition.position;
             alex.rotation = alexCampPosition.rotation;
         }
+
         if (TimeOfDayManager.Instance != null)
         {
             TimeOfDayManager.Instance.SetNight();
         }
         yield return StartCoroutine(Fade(1f, 0f));
+        if (ObjectiveManager.Instance != null)
+        {
+            ObjectiveManager.Instance.SetObjective("Talk to Ryan");
+        }
     }
     IEnumerator Fade(float startAlpha, float endAlpha)
     {
