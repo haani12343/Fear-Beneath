@@ -110,9 +110,8 @@ public class TentTrigger : MonoBehaviour
         if (deadJake != null)
             deadJake.SetActive(true);
 
-        // Ryan is still missing
         if (deadRyan != null)
-            deadRyan.SetActive(false);
+            deadRyan.SetActive(true);
 
         // Fade back in
         yield return StartCoroutine(Fade(1f, 0f));
