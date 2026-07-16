@@ -10,7 +10,7 @@ public class MenuManager : MonoBehaviour
     public GameObject settingsPanel;
     public void PlayGame()
     {
-        SceneManager.LoadScene("SampleScene");
+        SceneManager.LoadScene("IntroScene");
     }
     public void OpenSettings()
     {
