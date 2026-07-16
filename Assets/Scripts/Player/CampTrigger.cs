@@ -54,7 +54,8 @@ public class CampTrigger : MonoBehaviour
             yield return new WaitForSeconds(setupSound.length);
             audioSource.Stop();
         }
-        campSetup.SetActive(true);
+        if (campSetup != null)
+            campSetup.SetActive(true);
         if (ryan != null && ryanCampPosition != null)
         {
             ryan.position = ryanCampPosition.position;
@@ -70,10 +71,14 @@ public class CampTrigger : MonoBehaviour
             alex.position = alexCampPosition.position;
             alex.rotation = alexCampPosition.rotation;
         }
-
         if (TimeOfDayManager.Instance != null)
         {
             TimeOfDayManager.Instance.SetNight();
+        }
+        RyanDialogue dialogue = FindFirstObjectByType<RyanDialogue>();
+        if (dialogue != null)
+        {
+            dialogue.EnableTalking();
         }
         yield return StartCoroutine(Fade(1f, 0f));
         if (ObjectiveManager.Instance != null)

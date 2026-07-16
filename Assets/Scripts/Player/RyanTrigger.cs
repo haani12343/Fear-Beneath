@@ -18,15 +18,22 @@ public class RyanDialogue : MonoBehaviour
     };
     private bool playerNear = false;
     private bool dialogueStarted = false;
+    private bool canTalk = false;   // Locked until camp is built
     private int currentLine = 0;
     void Start()
     {
         talkPrompt.SetActive(false);
         dialoguePanel.SetActive(false);
     }
+    public void EnableTalking()
+    {
+        canTalk = true;
+        if (playerNear)
+            talkPrompt.SetActive(true);
+    }
     void Update()
     {
-        if (playerNear && !dialogueStarted && Input.GetKeyDown(KeyCode.E))
+        if (playerNear && canTalk && !dialogueStarted && Input.GetKeyDown(KeyCode.E))
         {
             StartDialogue();
         }
@@ -70,26 +77,24 @@ public class RyanDialogue : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         if (ObjectiveManager.Instance != null)
-        {
             ObjectiveManager.Instance.SetObjective("Sleep in the Tent");
-        }
+        TentTrigger tent = FindFirstObjectByType<TentTrigger>();
+        if (tent != null)
+            tent.EnableSleeping();
     }
     void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
-        {
-            playerNear = true;
-
-            if (!dialogueStarted)
-                talkPrompt.SetActive(true);
-        }
+        if (!other.CompareTag("Player"))
+            return;
+        playerNear = true;
+        if (canTalk && !dialogueStarted)
+            talkPrompt.SetActive(true);
     }
     void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Player"))
-        {
-            playerNear = false;
-            talkPrompt.SetActive(false);
-        }
+        if (!other.CompareTag("Player"))
+            return;
+        playerNear = false;
+        talkPrompt.SetActive(false);
     }
 }
